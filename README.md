@@ -1,16 +1,76 @@
-# React + Vite
+# 📝 React Todo App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple single-page Todo application built with React, Axios, and Tailwind CSS.  
+It interacts with the JSONPlaceholder API and demonstrates core frontend concepts like state management, API integration, routing, and UI design.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Features
 
-## React Compiler
+-  Displays todos in a table layout
+-  Add new todos via modal form
+-  View detailed todo page
+-  Delete todos with confirmation popup
+-  Fetch data using Axios
+-  Responsive UI with Tailwind CSS
+-  Optimistic UI updates (local state handling)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+##  Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React (Vite)
+- React Router DOM
+- Axios
+- Tailwind CSS
+
+---
+
+## ⚙️ Installation & Setup
+
+Clone the repository:
+
+```bash
+git clone https://github.com/your-username/react-todo-app.git
+cd react-todo-app
+Install dependencies:
+Bash
+npm install
+Run development server:
+Bash
+npm run dev
+
+---
+
+Key Concepts Demonstrated
+1. State Management
+Uses React useState and useEffect for managing todos and UI state.
+2. API Integration
+All API calls are handled using Axios in a dedicated service file.
+
+export const getTodos = async () => {
+  const res = await axios.get(API_URL);
+  return res.data;
+};
+
+3. Component
+Presentational components (UI only)
+Page components (logic + layout)
+Service layer (API abstraction)
+
+4. Routing
+React Router handles navigation:
+/ → Todo list
+/todo/:id → Todo detail page
+
+5. UX Decisions
+Modal-based todo creation
+Confirmation before deletion
+Status badges for quick scanning
+Minimal dark UI for focus
+
+🧪 Known Limitations
+No persistent backend (mock API limitation)
+Newly created todos exist only in local state
+No authentication system
+No real-time sync
