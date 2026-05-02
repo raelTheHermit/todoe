@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { getTodos, deleteTodo, createTodo } from "../services/todoService";
+import { addLocalTodo } from "../localStor";
+import { getTodos, deleteTodo } from "../services/todoService";
 import TodoTable from "../components/TodoTable";
 import AddTodoModal from "../components/AddTodoModal";
 import ConfirmDialog from "../components/ConfirmDialog"
@@ -19,78 +20,106 @@ export default function Home() {
         loadTodos();
     }, []);
 
-    const handleAdd = async (title) => {
+    const handleAdd = (title) => {
         if (!title.trim()) return;
 
-        try {
-            const newTodo = await createTodo({
-                userId: 11, // or whatever user you’re simulating
-                title,
-                completed: false,
-            });
+        const newTodo = {
+            id: Date.now(),
+            userId: 1,
+            title,
+            completed: false,
+        };
 
-            setTodos(prev => [newTodo, ...prev]);
-            setShowModal(false);
+        addLocalTodo(newTodo);
 
-        } catch (error) {
-            console.error("Failed to add todo:", error);
-        }
+        setTodos(prev => [newTodo, ...prev]);
+
+        setShowModal(false);
     };
 
+
+    
     const handleDelete = async () => {
+        setDeleteId(null); // close instantly
+
         await deleteTodo(deleteId);
-        setTodos(todos.filter(t => t.id !== deleteId));
-        setDeleteId(null);
+
+        setTodos(prev => prev.filter(t => t.id !== deleteId));
     };
 
     return (
         <>
-        <div className="min-h-screen bg-neutral-950 text-white p-6">
-  <div className="max-w-5xl mx-auto space-y-6">
+            <div className="bg-neutral-950 text-white">
 
-    {/* Header */}
-    <div className="flex items-center justify-between">
-      <h1 className="text-2xl font-semibold tracking-tight">
-        Todos
-      </h1>
+                <div className="max-w-5xl mx-auto px-6 pt-10 pb-6">
 
-      <button
-        onClick={() => setShowModal(true)}
-        className="bg-white text-black px-4 py-2 rounded-lg text-sm font-medium hover:bg-neutral-200 transition"
-      >
-        + Add Todo
-      </button>
-    </div>
+                    {/* Hero */}
+                    <div className="space-y-4">
 
-    {/* Table Container */}
-    <div className="bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden">
-      <TodoTable todos={todos} onDelete={setDeleteId} />
-    </div>
+                        <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
+                            Stay on top of your tasks
+                        </h1>
 
-  </div>
-</div>
-        <div>
-            <h1 className="mx-2 my-3 tracking-tight text-2xl">Todos</h1>
+                        <p className="text-neutral-400 max-w-xl text-sm md:text-base">
+                            A minimal task manager to help you focus on what matters.
+                            Add, track, and manage your todos without distractions.
+                        </p>
 
-            <button onClick={() => setShowModal(true)} className="bg-neutral-400 p-2 rounded-4xl border-2 border-neutral-700">Add Todo</button>
+                        <div className="flex items-center gap-3 pt-2">
+                            <button
+                                onClick={() => setShowModal(true)}
+                                className="bg-white text-black px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-neutral-200 transition"
+                            >
+                                + Add Todo
+                            </button>
 
-            <TodoTable todos={todos} onDelete={(id) => setDeleteId(id)} />
+                            <span className="text-xs text-neutral-500">
+                                {todos.length} tasks loaded
+                            </span>
+                        </div>
 
-            {showModal && (
-                <AddTodoModal
-                    onClose={() => setShowModal(false)}
-                    onSubmit={handleAdd}
-                />
-            )}
+                    </div>
 
-            {deleteId && (
-                <ConfirmDialog
-                    message="Are you sure?"
-                    onConfirm={handleDelete}
-                    onCancel={() => setDeleteId(null)}
-                />
-            )}
+                </div>
+
             </div>
+            <div className="min-h-screen bg-neutral-950 text-white p-6">
+                <div className="max-w-5xl mx-auto space-y-6">
+
+                    {/* Header */}
+                    <div className="flex items-center justify-between">
+                        <h1 className="text-2xl font-semibold tracking-tight">
+                            Todosk
+                        </h1>
+
+                        
+                    </div>
+
+                    {/* Table Container */}
+                    <div className="bg-neutral-900 border border-neutral-800 rounded-xl overflow-hidden">
+
+                        <TodoTable todos={todos} onDelete={(id) => setDeleteId(id)} />
+                        {showModal && (
+
+                            <AddTodoModal
+                                onClose={() => setShowModal(false)}
+                                onSubmit={handleAdd}
+                            />
+                        )}
+
+                        {deleteId && (
+                            <ConfirmDialog
+                                message="Are you sure?"
+                                onConfirm={handleDelete}
+                                onCancel={() => setDeleteId(null)}
+                            />
+                        )}
+
+                    </div>
+
+                </div>
+            </div>
+
         </>
     );
 }

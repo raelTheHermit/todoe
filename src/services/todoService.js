@@ -1,17 +1,21 @@
 import axios from "axios";
+import { getLocalTodos  } from "../localStor";
 const API_URL = "https://jsonplaceholder.typicode.com/todos";
+
 
 export const getTodos = async () => {
   try {
     const res = await axios.get(API_URL);
-    console.log("RAW:", res.data);
 
-    const sorted = res.data.sort((a, b) => b.id - a.id).slice(0, 10);
-    
+    const apiTodos = res.data;
 
-    return sorted;
+    const localTodos = getLocalTodos();
+
+    const combined = [...localTodos, ...apiTodos];
+
+    return combined.sort((a, b) => b.id - a.id).slice(0, 10);
   } catch (error) {
-    console.error("Error fetching todos:", error);
+    console.error(error);
     return [];
   }
 };

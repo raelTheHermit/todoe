@@ -1,29 +1,44 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function AddTodoModal({ onClose, onSubmit }) {
     const [title, setTitle] = useState("");
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, []);
 
     return (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-            <div className="bg-neutral-950 text-white border border-neutral-800 rounded-xl p-6 w-full max-w-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
 
-                <h2 className="text-lg font-medium mb-4">New Todo</h2>
+            {/* Backdrop */}
+            <div
+                className="absolute inset-0 bg-black/60"
+                onClick={onClose}
+            />
+
+            {/* Modal */}
+            <div className="relative bg-neutral-900 p-6 rounded-xl w-full max-w-md space-y-4">
+
+                <h2 className="text-lg font-semibold">Add Todo</h2>
 
                 <input
-                    className="w-full bg-neutral-800 border border-neutral-50 rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-black"
-                    placeholder="What needs to be done?"
+                    ref={inputRef}
+                    type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Enter task..."
+                    className="w-full px-3 py-2 rounded-lg bg-neutral-800 border border-neutral-700 focus:outline-none focus:ring-2 focus:ring-white"
                 />
 
-                <div className="flex justify-end gap-2">
-                    <button onClick={onClose} className="text-neutral-400 hover:border-neutral-400 border border- px-4 py-2 rounded-xl">
+                <div className="flex justify-end gap-3">
+                    <button onClick={onClose} className="px-4 py-2 bg-neutral-700 rounded-lg">
                         Cancel
                     </button>
 
                     <button
                         onClick={() => onSubmit(title)}
-                        className="bg-white text-black px-4 py-2 rounded-lg"
+                        className="px-4 py-2 bg-white text-black rounded-lg"
                     >
                         Add
                     </button>
