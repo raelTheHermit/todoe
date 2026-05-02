@@ -3,7 +3,7 @@ const API_URL = "https://jsonplaceholder.typicode.com/todos";
 
 export const getTodos = async () => {
   const res = await axios.get(API_URL);
-  return res.data.slice(0, 10); // Limit (return only the first 10 items)
+  return res.data.slice(-10); // Limit (return only the first 10 items)
 };
 
 export const getTodo = async (id) => {
