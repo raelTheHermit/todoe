@@ -2,8 +2,18 @@ import axios from "axios";
 const API_URL = "https://jsonplaceholder.typicode.com/todos";
 
 export const getTodos = async () => {
-  const res = await axios.get(API_URL);
-  return res.data.slice(-10); // Limit (return only the first 10 items)
+  try {
+    const res = await axios.get(API_URL);
+    console.log("RAW:", res.data);
+
+    const sorted = res.data.sort((a, b) => b.id - a.id).slice(0, 10);
+    
+
+    return sorted;
+  } catch (error) {
+    console.error("Error fetching todos:", error);
+    return [];
+  }
 };
 
 export const getTodo = async (id) => {

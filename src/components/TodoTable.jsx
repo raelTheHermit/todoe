@@ -4,7 +4,7 @@ export default function TodoTable({ todos, onDelete }) {
     const navigate = useNavigate();
 
     return (
-
+        
         <table className="w-full text-sm">
             <thead className="text-neutral-400 border-b border-neutral-800">
                 <tr>

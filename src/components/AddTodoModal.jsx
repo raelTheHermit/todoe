@@ -5,7 +5,7 @@ export default function AddTodoModal({ onClose, onSubmit }) {
 
     return (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-            <div className="bg-neutral-50 border border-neutral-800 rounded-xl p-6 w-full max-w-md">
+            <div className="bg-neutral-950 text-white border border-neutral-800 rounded-xl p-6 w-full max-w-md">
 
                 <h2 className="text-lg font-medium mb-4">New Todo</h2>
 
